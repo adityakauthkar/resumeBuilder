@@ -13,4 +13,8 @@
     button{ 
         @apply cursor-pointer
     }
+/* 
+    input:not([type = "checkbox"]){
+        @apply 
+    } */
 }
