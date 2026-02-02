@@ -1,0 +1,127 @@
+import {
+  User,
+  Mail,
+  BriefcaseBusiness,
+  MapPin,
+  Phone,
+  Linkedin,
+  Globe,
+} from "lucide-react";
+import React from "react";
+
+const PersonalInfo = ({
+  data,
+  onChange,
+  removeBackground,
+  setRemoveBackground,
+}) => {
+  const handleChange = (field, value) => {
+    onChange({ ...data, [field]: value });
+  };
+
+  const fields = [
+    {
+      Key: "FullName",
+      label: "Full Name",
+      icon: User,
+      type: "text",
+      required: true,
+    },
+    {
+      Key: "Email",
+      label: "Email address",
+      icon: Mail,
+      type: "email",
+      required: true,
+    },
+    { Key: "Phone", label: "Phone Number", icon: Phone, type: "tel" },
+    { Key: "Location", label: "Location", icon: MapPin, type: "text" },
+    {
+      Key: "Profession",
+      label: "Profession",
+      icon: BriefcaseBusiness,
+      type: "text",
+    },
+    { Key: "Linkedin", label: "LinkedIn Profile", icon: Linkedin, type: "url" },
+    { Key: "Website", label: "Personal Website", icon: Globe, type: "url" },
+  ];
+
+  return (
+    <div>
+      <h3 className="text-lg font-semibold text-gray-500">
+        Personal Information
+      </h3>
+
+      <p className="text-sm text-gray-600">
+        Get started with Personal Information
+      </p>
+
+      <div className="flex items-center gap-2">
+        <label>
+          {data.image ? (
+            <img
+              src={
+                typeof data.image === "string"
+                  ? data.image
+                  : URL.createObjectURL(data.image)
+              }
+              alt="user"
+              className="w-16 h-16 rounded-full object-cover mt-5 ring ring-slate-500 hover:opacity-80"
+            />
+          ) : (
+            <div className="inline-flex items-center gap-2 mt-5 text-slate-500 hover:text-slate-700 cursor-pointer">
+              <User className="size-10 p-2.5 border rounded-full" />
+              Upload user image
+            </div>
+          )}
+
+          <input
+            type="file"
+            accept="image/jpeg,image/png"
+            className="hidden"
+            onChange={(e) => handleChange("image", e.target.files[0])}
+          />
+        </label>
+
+        {typeof data.image === "object" && (
+          <div className="flex flex-col gap-1 pl-4 text-sm">
+            <p>Remove background</p>
+            <label className="relative inline-flex items-center cursor-pointer gap-3">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                onChange={() => setRemoveBackground((prev) => !prev)}
+                checked={removeBackground}
+              />
+              <div className="w-9 h-5 bg-slate-300 rounded-full peer-checked:bg-green-600 transition-colors duration-300"></div>
+              <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform duration-200 peer-checked:translate-x-4"></span>
+            </label>
+          </div>
+        )}
+      </div>
+
+      {fields.map((field) => {
+        const Icon = field.icon;
+        return (
+          <div key={field.Key} className="space-y-1 mt-5">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+              <Icon className="size-4" />
+              {field.label}
+              {field.required && <span className="text-red-500">*</span>}
+            </label>
+            <input
+              type={field.type}
+              value={data[field.Key] || ""}
+              onChange={(e) => handleChange(field.Key, e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 outline-none transition-colors text-sm"
+              placeholder={`Enter your ${field.label.toLowerCase()}`}
+              required={field.required}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default PersonalInfo;
