@@ -1,10 +1,11 @@
 import { PlusIcon, UploadCloud, UploadCloudIcon, XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { dummyResumeData } from "../assets/assets/assets";
 
 const Dashboard = () => {
   const colors = ["#9333ea"];
-  // const [allresumes, setAllResumes] = useState();
+  const [allresumes, setAllResumes] = useState([]);
   const [showCreateResume, setshowCreateResume] = useState(false);
   const [showuploadResume, setshowuploadResume] = useState(false);
   const [title, setTitle] = useState("");
@@ -12,38 +13,40 @@ const Dashboard = () => {
   const [editResumeId, seteditResumeId] = useState("");
   const navigate = useNavigate();
 
-  // const fetchAllResumes = async () => {
-  //   const url = "";
-  //   const response = await axios.get("");
-  // };
+  const fetchAllResumes = async () => {
+    setAllResumes(dummyResumeData);
+  };
 
   const createResume = async (event) => {
     event.preventDefault(); //prevent webpage from reloading
     setshowCreateResume(false);
     navigate("/resumebuilder");
   };
+
   const uploadResume = async (event) => {
     event.preventDefault(); //prevent webpage from reloading
     setshowuploadResume(false);
     navigate("/resumebuilder");
   };
 
-//   const editTotle =async()=>{
-//     event.preventDefault();
-//   }
+  // const editTitle =async()=>{
+  //   event.preventDefault();
+  // }
 
-//   const deleteResume =async()=>{
-// const confirm = window.confirm('Are you sure you want to delete resume ?') ; 
-// if(confirm){
-//   setAllResumes(resume);
+  const handleEdit = (resume) => {
+    navigate(`/resumeBuilder/${resume._id}`);
+  };
 
-// }
-//   }
+  const handleDelete = async () => {
+    const confirm = window.confirm("Are you sure you want to delete resume ?");
+    if (!confirmDelete) return;
 
+    setAllResumes((prev) => prev.filter((r) => r._id !== id));
+  };
 
-  // useEffect(() => {
-  //   fetchAllResumes();
-  // }, []);
+  useEffect(() => {
+    fetchAllResumes();
+  }, []);
 
   return (
     <div>
@@ -79,6 +82,37 @@ const Dashboard = () => {
         <hr className="borderslate-300 my-6 sm:w-[305px]" />
         <div className="grid grid-cols-2 sm:flex flex-wrap gap-4">
           {/* map function to display the existing resumes  */}
+
+          <div className="grid grid-cols-2 sm:flex flex-wrap gap-4">
+            {allresumes.map((item) => (
+              <div
+                key={item._id}
+                className="relative w-40 h-48 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center group"
+              >
+                {/* Resume title */}
+                <p className="text-center font-medium text-slate-700 px-2">
+                  {item.title}
+                </p>
+
+                {/* Edit & Delete icons */}
+                <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    onClick={() => handleEdit(item)}
+                    className="p-1 rounded hover:bg-indigo-100 text-indigo-600"
+                  >
+                    ✏️
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="p-1 rounded hover:bg-red-100 text-red-600"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Create Resume Modal  */}

@@ -9,9 +9,11 @@ import {
   Sparkle,
   User,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PersonalInfo from "../components/PersonalInfo";
+import ResumePreview from "../components/ResumePreview";
+import { dummyResumeData } from "../assets/assets/assets";
 
 const ResumeBuilder = () => {
   const { id: resumeId } = useParams(); // Get resume ID from URL params
@@ -19,9 +21,9 @@ const ResumeBuilder = () => {
   const [resumeData, setResumeData] = useState({
     _id: "",
     title: "",
-    profession_info: {},
+    personal_info: {},
     professional_summary: " ",
-    experiance: [],
+    experience: [],
     education: [],
     project: [],
     skills: [],
@@ -34,9 +36,9 @@ const ResumeBuilder = () => {
   const [removeBackground, setRemoveBackground] = useState(false);
 
   const sections = [
-    { id: "personal", name: "Personal Info", icon: User },
+    { id: "personal", name: "personal_info", icon: User },
     { id: "summary", name: "Summary", icon: FileText },
-    { id: "experiance", name: "Experiance", icon: Briefcase },
+    { id: "experience", name: "Experience", icon: Briefcase },
     { id: "education", name: "Education", icon: GraduationCap },
     { id: "projects", name: "Projects", icon: FolderIcon },
     { id: "skills", name: "Skills", icon: Sparkle },
@@ -44,10 +46,22 @@ const ResumeBuilder = () => {
 
   const activeSection = sections[activeSectionsIndex];
 
-  // Placeholder function to load existing resume if needed
-  const loadExistingResume = async () => {
+//Loading Existing Resumes 
+  const loadExistingResume = async (resumeId) => {
     // fetch resume by resumeId and setResumeData
+    if (resumeId) {
+      const existingResume = dummyResumeData.find((r) => r._id === resumeId);
+      if (existingResume) {
+        setResumeData(existingResume);
+      }
+    }
   };
+
+  useEffect(()=>{
+     if (resumeId) {
+    loadExistingResume(resumeId);
+  }
+  }, [resumeId]);
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -98,11 +112,13 @@ const ResumeBuilder = () => {
                   <button
                     onClick={() =>
                       setActiveSectionsIndex((prev) =>
-                        Math.min(prev + 1, sections.length - 1)
+                        Math.min(prev + 1, sections.length - 1),
                       )
                     }
                     className={`flex items-center gap-1 p-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all ${
-                      activeSectionsIndex === sections.length - 1 ? "opacity-50 cursor-not-allowed" : ""
+                      activeSectionsIndex === sections.length - 1
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
                     }`}
                     disabled={activeSectionsIndex === sections.length - 1}
                   >
@@ -115,11 +131,11 @@ const ResumeBuilder = () => {
               <div className="space-y-6">
                 {activeSection.id === "personal" && (
                   <PersonalInfo
-                    data={resumeData.profession_info}
+                    data={resumeData.personal_info}
                     onChange={(data) =>
                       setResumeData((prev) => ({
                         ...prev,
-                        profession_info: data,
+                        personal_info: data,
                       }))
                     }
                     removeBackground={removeBackground}
@@ -152,11 +168,18 @@ const ResumeBuilder = () => {
           </div>
 
           {/* Right panel - Resume Preview */}
-          <div className="lg:col-span-7 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold mb-4">Resume Preview</h2>
-            <p className="text-gray-500">This panel will show live preview of your resume.</p>
+          <div className="lg:col-span-7 max-lg:mt-6">
+            <div>{/* ----butttons---- */}</div>
+
+            <div>
+              {/* Resume preview */}
+              <ResumePreview
+                data={resumeData}
+                template={resumeData.template}
+                accentColor={resumeData.accent_color}
+              />
+            </div>
           </div>
-          
         </div>
       </div>
     </div>

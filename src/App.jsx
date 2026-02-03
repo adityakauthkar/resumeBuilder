@@ -21,7 +21,7 @@ const App = () => {
       <Route element={<Layout />}>
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/preview' element={<Preview />} />
-        <Route path='/resumebuilder' element={<ResumeBuilder />} />
+        <Route path='/resumebuilder/:id' element={<ResumeBuilder />} />
       </Route>
 
     </Routes>

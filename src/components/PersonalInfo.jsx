@@ -21,29 +21,29 @@ const PersonalInfo = ({
 
   const fields = [
     {
-      Key: "FullName",
+      key: "full_name",
       label: "Full Name",
       icon: User,
       type: "text",
       required: true,
     },
     {
-      Key: "Email",
+      key: "email",
       label: "Email address",
       icon: Mail,
       type: "email",
       required: true,
     },
-    { Key: "Phone", label: "Phone Number", icon: Phone, type: "tel" },
-    { Key: "Location", label: "Location", icon: MapPin, type: "text" },
+    { key: "phone", label: "Phone Number", icon: Phone, type: "tel" },
+    { key: "location", label: "Location", icon: MapPin, type: "text" },
     {
-      Key: "Profession",
+      key: "profession",
       label: "Profession",
       icon: BriefcaseBusiness,
       type: "text",
     },
-    { Key: "Linkedin", label: "LinkedIn Profile", icon: Linkedin, type: "url" },
-    { Key: "Website", label: "Personal Website", icon: Globe, type: "url" },
+    { key: "linkedin", label: "LinkedIn Profile", icon: Linkedin, type: "url" },
+    { key: "website", label: "Personal Website", icon: Globe, type: "url" },
   ];
 
   return (
@@ -99,11 +99,12 @@ const PersonalInfo = ({
           </div>
         )}
       </div>
-
+      {/* All input fields */}
       {fields.map((field) => {
         const Icon = field.icon;
         return (
-          <div key={field.Key} className="space-y-1 mt-5">
+          <div key={field.key} className="space-y-1 mt-5">
+
             <label className="flex items-center gap-2 text-sm font-medium text-gray-600">
               <Icon className="size-4" />
               {field.label}
@@ -111,13 +112,14 @@ const PersonalInfo = ({
             </label>
             <input
               type={field.type}
-              value={data[field.Key] || ""}
-              onChange={(e) => handleChange(field.Key, e.target.value)}
+              value={data[field.key] || ""}
+              onChange={(e) => handleChange(field.key, e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 outline-none transition-colors text-sm"
               placeholder={`Enter your ${field.label.toLowerCase()}`}
               required={field.required}
             />
           </div>
+          
         );
       })}
     </div>
