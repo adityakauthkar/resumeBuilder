@@ -14,6 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import PersonalInfo from "../components/PersonalInfo";
 import ResumePreview from "../components/ResumePreview";
 import { dummyResumeData } from "../assets/assets/assets";
+import TemplateSelector from "../components/TemplateSelector";
 
 const ResumeBuilder = () => {
   const { id: resumeId } = useParams(); // Get resume ID from URL params
@@ -46,7 +47,7 @@ const ResumeBuilder = () => {
 
   const activeSection = sections[activeSectionsIndex];
 
-//Loading Existing Resumes 
+  //Loading Existing Resumes
   const loadExistingResume = async (resumeId) => {
     // fetch resume by resumeId and setResumeData
     if (resumeId) {
@@ -57,10 +58,10 @@ const ResumeBuilder = () => {
     }
   };
 
-  useEffect(()=>{
-     if (resumeId) {
-    loadExistingResume(resumeId);
-  }
+  useEffect(() => {
+    if (resumeId) {
+      loadExistingResume(resumeId);
+    }
   }, [resumeId]);
 
   return (
@@ -93,7 +94,16 @@ const ResumeBuilder = () => {
 
               {/* Section Navigation */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
-                <div></div>
+
+              {/* Template selector Button */}
+                <div className="flex items-center gap-2">
+                  <TemplateSelector selectedTemplate={resumeData.template} onChange={(template)=> setResumeData(prev => ({...prev , template}))}/>
+                </div>
+
+                {/* Accent selector */}
+               <div>
+                
+               </div>
 
                 <div className="flex items-center gap-2">
                   {/* Previous Button */}
@@ -141,25 +151,6 @@ const ResumeBuilder = () => {
                     removeBackground={removeBackground}
                     setRemoveBackground={setRemoveBackground}
                   />
-                )}
-
-                {activeSection.id === "summary" && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Professional Summary
-                    </label>
-                    <textarea
-                      className="w-full border border-gray-300 rounded-md p-2"
-                      value={resumeData.professional_summary}
-                      onChange={(e) =>
-                        setResumeData((prev) => ({
-                          ...prev,
-                          professional_summary: e.target.value,
-                        }))
-                      }
-                      rows={5}
-                    ></textarea>
-                  </div>
                 )}
 
                 {/* Other sections can be added similarly */}
