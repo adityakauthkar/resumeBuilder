@@ -188,22 +188,37 @@ const ResumeBuilder = () => {
 
               {/* 3.Professional Experiance */}
               <div>
-                {activeSection.id === "experience" && <h1>hello experience</h1>}
+                {activeSection.id === "experience" &&(
+                  <ProfessionalExperience
+                   value = {resumeData.experience}
+                   onChange={(updatedExperience) => setResumeData((prev) => ({
+                    ...prev , 
+                    experience:updatedExperience,
+                   }))}
+                   
+                  />
+                )}
               </div>
 
               {/* 4.Education */}
               <div>
-                {activeSection.id === "education" && <h1>hello education</h1>}
+                {activeSection.id === "education" &&(
+                  <Education/>
+                )}
               </div>
 
               {/* 5.Projects */}
               <div>
-                {activeSection.id === "projects" && <h1>hello project</h1>}
+                {activeSection.id === "projects" && (
+                  <Projects/>
+                )}
               </div>
 
               {/* 6.Skills  */}
               <div>
-                {activeSection.id === "skills" && <h1>hello skills</h1>}
+                {activeSection.id === "skills" && (
+                  <Skills/>
+                )}
               </div>
             </div>
           </div>

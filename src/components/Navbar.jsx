@@ -24,7 +24,7 @@ const Navbar = () => {
           >
             Logout
           </button>
-          <span>Aditya</span>
+       
         </div>
       </nav>
     </div>
