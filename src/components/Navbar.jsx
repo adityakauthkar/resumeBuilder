@@ -3,12 +3,12 @@ import { Link } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const User = { name: "Aditya Kauthkar" };
 
-  const logoutUser = ()=> { 
-    navigate('/');
-  }
+  const logoutUser = () => {
+    navigate("/");
+  };
 
   return (
     <div className="bg-white shadow">
@@ -18,9 +18,13 @@ const Navbar = () => {
         </Link>
         <div className="flex items-center gap-4 text-sm">
           <p className="max-sm:hidden">Hii , {User?.name}</p>
-          <button onClick={logoutUser} className="bg-white  hover:bg-slate-50 border  border-gray-300 px-7 py-1.5 rounded-full active:scale-95 transition-all ">
+          <button
+            onClick={logoutUser}
+            className="bg-white  hover:bg-slate-50 border  border-gray-300 px-7 py-1.5 rounded-full active:scale-95 transition-all "
+          >
             Logout
           </button>
+          <span>Aditya</span>
         </div>
       </nav>
     </div>

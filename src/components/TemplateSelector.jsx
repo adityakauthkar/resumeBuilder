@@ -34,7 +34,7 @@ const TemplateSelector = ({selectedTemplate , onChange}) => {
             <Layout size={14}/> <span className='max-sm:hidden'>Template</span>
         </button>
         { isOpen &&(
-            <div className='absoulte top-full w-xs p-3 mt-2 space-y-3 z-10 bg-white rounded-md border border-gray-200 shadow-sm'>
+            <div className='absolute top-full min-w-[18rem] p-3 mt-2 space-y-3 z-10 bg-white rounded-md border border-gray-200 shadow-sm'>
 
             {
                 template.map((template)=>(
@@ -44,7 +44,7 @@ const TemplateSelector = ({selectedTemplate , onChange}) => {
                 }`}>
                     {
                         selectedTemplate === template.id &&(
-                            <div className='absoulte top-2 right-2'>
+                            <div className='absolute top-2 right-2'>
 
                                 <div className='size-5 bg-blue-400 rounded-full flex items-center justify-center '>
                                     <Check className='w-3 h-3 text-white'/>
@@ -55,7 +55,7 @@ const TemplateSelector = ({selectedTemplate , onChange}) => {
                     }
                  <div className='space-y-1'>
                     <h4 className='font-medium text-gray-800'>{template.name}</h4>
-                    <div className='mt-2 p-2 bg-blue-50 rounded text-xs text-gray-500 italic'> {template.preview}</div>
+                    <div className='mt-2 p-2 bg-blue-50 rounded text-w-72 text-gray-500 italic'> {template.preview}</div>
 
                  </div>
                 </div>
