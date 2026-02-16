@@ -75,6 +75,12 @@ const ProfessionalExperience = ({ value = [], onChange }) => {
           ))}
         </div>
       )}
+
+      <div>
+        <button className="px-7 py-2 rounded-lg bg-green-200 mt-5 text-green-600 text-sm font-medium hover:border border-green-500 active:scale-95 transition-all">
+          Save Changes
+        </button>
+      </div>
     </div>
   );
 };
@@ -116,7 +122,6 @@ const Formdata = ({ index, data, onDelete, onUpdate }) => {
 
         <input
           type="date"
-          
           className="border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
           value={data.start_date}
         />

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+
 const Hero = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -236,6 +237,8 @@ const Hero = () => {
             ))}
           </div>
         </div>
+
+
       </div>
       <style>
         {`

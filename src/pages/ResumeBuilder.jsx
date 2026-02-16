@@ -21,6 +21,7 @@ import ProfessionalExperience from "../components/ProfessionalExperience";
 import Skills from "../components/Skills";
 import Projects from "../components/Projects";
 import Education from "../components/Education";
+import { resume } from "react-dom/server";
 
 const ResumeBuilder = () => {
   const { id: resumeId } = useParams(); // Get resume ID from URL params
@@ -188,38 +189,48 @@ const ResumeBuilder = () => {
 
               {/* 3.Professional Experiance */}
               <div>
-                {activeSection.id === "experience" &&(
+                {activeSection.id === "experience" && (
                   <ProfessionalExperience
-                   value = {resumeData.experience}
-                   onChange={(updatedExperience) => setResumeData((prev) => ({
-                    ...prev , 
-                    experience:updatedExperience,
-                   }))}
-                   
+                    value={resumeData.experience}
+                    onChange={(updatedExperience) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        experience: updatedExperience,
+                      }))
+                    }
                   />
                 )}
               </div>
 
               {/* 4.Education */}
               <div>
-                {activeSection.id === "education" &&(
-                  <Education/>
+                {activeSection.id === "education" && (
+                  <Education
+                    value={resumeData.education}
+                    onChange={(updatedEducation) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        education: updatedEducation,
+                      }))
+                    }
+                  />
                 )}
               </div>
 
               {/* 5.Projects */}
-              <div>
-                {activeSection.id === "projects" && (
-                  <Projects/>
-                )}
-              </div>
+              <div>{activeSection.id === "projects" && 
+                <Projects
+                value={resumeData.project}
+                onChange={(upadteProject) => setResumeData((prev)=>({
+                  ...prev , 
+                  project:upadteProject,
+                }))}
+                 />
+                }
+                </div>
 
               {/* 6.Skills  */}
-              <div>
-                {activeSection.id === "skills" && (
-                  <Skills/>
-                )}
-              </div>
+              <div>{activeSection.id === "skills" && <Skills />}</div>
             </div>
           </div>
 

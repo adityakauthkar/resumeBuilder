@@ -1,19 +1,52 @@
 import { Navigation } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { login } from "../../services/operations/authAPI";
 
+const LoginForm = () => {
+  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  const [formData, setFormdata] = useState({
+    email: "",
+    password: "",
+  });
 
-const Login = () => {
+  const { email, password } = formData;
 
- const navigate = useNavigate();
-  const handleLogin = () => {
-    navigate("/dashboard");
+  const handleFormchange = (e) => {
+    setFormdata((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  //handle login :
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await login(formData);
+      const { token, data } = response;
+     
+      
+    localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("token", token);
+
+      alert("Login successful ");
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("Login Error:", error?.response?.data || error.message);
+      alert(error?.response?.data?.message || "Login Failed");
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <form className="max-w-96 w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white">
+      <form
+        className="max-w-96 w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white"
+        onSubmit={handleLogin}
+      >
         <h1 className="text-gray-900 text-3xl mt-10 font-medium">Login</h1>
         <p className="text-gray-500 text-sm mt-2">Please sign in to continue</p>
         <div className="flex items-center w-full mt-10 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
@@ -33,7 +66,9 @@ const Login = () => {
           </svg>
           <input
             type="email"
+            name="email"
             placeholder="Email id"
+            onChange={handleFormchange}
             className="bg-transparent text-gray-500 placeholder-gray-500 outline-none text-sm w-full h-full"
             required
           />
@@ -54,7 +89,9 @@ const Login = () => {
           </svg>
           <input
             type="password"
+            name="password"
             placeholder="Password"
+            onChange={handleFormchange}
             className="bg-transparent text-gray-500 placeholder-gray-500 outline-none text-sm w-full h-full"
             required
           />
@@ -68,7 +105,6 @@ const Login = () => {
         <button
           type="submit"
           className="mt-2 w-full h-11 rounded-full text-white bg-green-500 hover:opacity-90 transition-opacity"
-          onClick={handleLogin}
         >
           Login
         </button>
@@ -83,4 +119,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginForm;
