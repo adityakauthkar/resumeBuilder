@@ -13,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PersonalInfo from "../components/PersonalInfo";
 import ResumePreview from "../components/ResumePreview";
-import { dummyResumeData } from "../assets/assets/assets";
 import TemplateSelector from "../components/TemplateSelector";
 import AccentSelector from "../components/AccentSelector";
 import ProfessionalSummary from "../components/ProfessionalSummary";
@@ -21,22 +20,26 @@ import ProfessionalExperience from "../components/ProfessionalExperience";
 import Skills from "../components/Skills";
 import Projects from "../components/Projects";
 import Education from "../components/Education";
-import { resume } from "react-dom/server";
+import { createResume, getResume } from "../../services/operations/resumeApi";
+import { updateResume } from "../../services/operations/resumeApi";
+import { useNavigate } from "react-router-dom";
+
 
 const ResumeBuilder = () => {
-  const { id: resumeId } = useParams(); // Get resume ID from URL params
+  const { id: resumeId } = useParams();
 
+  const navigate = useNavigate();
   const [resumeData, setResumeData] = useState({
     _id: "",
     title: "",
-    personal_info: {},
-    professional_summary: " ",
+    personalInfo: {},
+    professionalSummary: " ",
     experience: [],
     education: [],
-    project: [],
+    projects: [],
     skills: [],
     template: "classic",
-    accent_color: "#3B82F6",
+    accentColor: "#2563EB",
     public: false,
   });
 
@@ -44,7 +47,7 @@ const ResumeBuilder = () => {
   const [removeBackground, setRemoveBackground] = useState(false);
 
   const sections = [
-    { id: "personal", name: "personal_info", icon: User },
+    { id: "personal", name: "personalInfo", icon: User },
     { id: "summary", name: "Summary", icon: FileText },
     { id: "experience", name: "Experience", icon: Briefcase },
     { id: "education", name: "Education", icon: GraduationCap },
@@ -55,21 +58,42 @@ const ResumeBuilder = () => {
   const activeSection = sections[activeSectionsIndex];
 
   //Loading Existing Resumes
-  const loadExistingResume = async (resumeId) => {
-    // fetch resume by resumeId and setResumeData
-    if (resumeId) {
-      const existingResume = dummyResumeData.find((r) => r._id === resumeId);
-      if (existingResume) {
-        setResumeData(existingResume);
-      }
+  const loadExistingResume = async () => {
+    try {
+      const response = await getResume(resumeId);
+      console.log("Loaded Resume:", response);
+      setResumeData(response.data);
+    } catch (error) {
+      console.error("Error loading resume:", error);
     }
   };
 
   useEffect(() => {
     if (resumeId) {
-      loadExistingResume(resumeId);
+      loadExistingResume(resumeId); 
     }
   }, [resumeId]);
+
+  //update resume
+  const updateResumedata = async () => {
+    try {
+      if (resumeId) {
+       let response =  await updateResume(resumeId, resumeData);
+        console.log("updated resume : " ,  response.data);
+        setResumeData(response.data);
+      } else {
+
+        //new resume creating:
+        let response = await createResume(resumeData); 
+        navigate(`/resumebuilder/${response._id}`)
+        console.log("Resume Created:", response.data);
+        setResumeData(resumeData);
+
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -114,11 +138,11 @@ const ResumeBuilder = () => {
                 {/* Accent selector */}
                 <div>
                   <AccentSelector
-                    selectedColor={resumeData.accent_color}
-                    onChange={(accent_color) =>
+                    selectedColor={resumeData.accentColor}
+                    onChange={(accentColor) =>
                       setResumeData((prev) => ({
                         ...prev,
-                        accent_color,
+                        accentColor,
                       }))
                     }
                   />
@@ -160,11 +184,11 @@ const ResumeBuilder = () => {
               <div className="space-y-6">
                 {activeSection.id === "personal" && (
                   <PersonalInfo
-                    data={resumeData.personal_info}
+                    data={resumeData.personalInfo}
                     onChange={(data) =>
                       setResumeData((prev) => ({
                         ...prev,
-                        personal_info: data,
+                        personalInfo: data,
                       }))
                     }
                     removeBackground={removeBackground}
@@ -176,11 +200,11 @@ const ResumeBuilder = () => {
               <div className="space-y-6">
                 {activeSection.id === "summary" && (
                   <ProfessionalSummary
-                    value={resumeData.professional_summary}
+                    value={resumeData.professionalSummary}
                     onChange={(summary) =>
                       setResumeData((prev) => ({
                         ...prev,
-                        professional_summary: summary,
+                        professionalSummary: summary,
                       }))
                     }
                   />
@@ -218,19 +242,27 @@ const ResumeBuilder = () => {
               </div>
 
               {/* 5.Projects */}
-              <div>{activeSection.id === "projects" && 
-                <Projects
-                value={resumeData.project}
-                onChange={(upadteProject) => setResumeData((prev)=>({
-                  ...prev , 
-                  project:upadteProject,
-                }))}
-                 />
-                }
-                </div>
+              <div>
+                {activeSection.id === "projects" && (
+                  <Projects
+                    value={resumeData.projects}
+                    onChange={(upadteProject) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        projects: upadteProject,
+                      }))
+                    }
+                  />
+                )}
+              </div>
 
               {/* 6.Skills  */}
               <div>{activeSection.id === "skills" && <Skills />}</div>
+              <div>
+                <button className="px-7 py-2 rounded-lg bg-green-200 mt-5 text-green-600 text-sm font-medium hover:border border-green-500 active:scale-95 transition-all" onClick={updateResumedata}>
+                  Save Changes
+                </button>
+              </div>
             </div>
           </div>
 
@@ -243,7 +275,7 @@ const ResumeBuilder = () => {
               <ResumePreview
                 data={resumeData}
                 template={resumeData.template}
-                accentColor={resumeData.accent_color}
+                accentColor={resumeData.accentColor}
               />
             </div>
           </div>

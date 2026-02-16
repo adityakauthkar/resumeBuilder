@@ -15,38 +15,38 @@ const ModernTemplate = ({ data, accentColor }) => {
 			{/* Header */}
 			<header className="p-8 text-white" style={{ backgroundColor: accentColor }}>
 				<h1 className="text-4xl font-light mb-3">
-					{data.personal_info?.full_name || "Your Name"}
+					{data.personalInfo?.name || "Your Name"}
 				</h1>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm ">
-					{data.personal_info?.email && (
+					{data.personalInfo?.email && (
 						<div className="flex items-center gap-2">
 							<Mail className="size-4" />
-							<span>{data.personal_info.email}</span>
+							<span>{data.personalInfo.email}</span>
 						</div>
 					)}
-					{data.personal_info?.phone && (
+					{data.personalInfo?.phone && (
 						<div className="flex items-center gap-2">
 							<Phone className="size-4" />
-							<span>{data.personal_info.phone}</span>
+							<span>{data.personalInfo.phone}</span>
 						</div>
 					)}
-					{data.personal_info?.location && (
+					{data.personalInfo?.location && (
 						<div className="flex items-center gap-2">
 							<MapPin className="size-4" />
-							<span>{data.personal_info.location}</span>
+							<span>{data.personalInfo.location}</span>
 						</div>
 					)}
-					{data.personal_info?.linkedin && (
-						<a target="_blank" href={data.personal_info?.linkedin} className="flex items-center gap-2">
+					{data.personalInfo?.linkedin && (
+						<a target="_blank" href={data.personalInfo?.linkedin} className="flex items-center gap-2">
 							<Linkedin className="size-4" />
-							<span className="break-all text-xs">{data.personal_info.linkedin.split("https://www.")[1] ? data.personal_info.linkedin.split("https://www.")[1] : data.personal_info.linkedin}</span>
+							<span className="break-all text-xs">{data.personalInfo.linkedin.split("https://www.")[1] ? data.personalInfo.linkedin.split("https://www.")[1] : data.personalInfo.linkedin}</span>
 						</a>
 					)}
-					{data.personal_info?.website && (
-						<a target="_blank" href={data.personal_info?.website} className="flex items-center gap-2">
+					{data.personalInfo?.website && (
+						<a target="_blank" href={data.personalInfo?.website} className="flex items-center gap-2">
 							<Globe className="size-4" />
-							<span className="break-all text-xs">{data.personal_info.website.split("https://")[1] ? data.personal_info.website.split("https://")[1] : data.personal_info.website}</span>
+							<span className="break-all text-xs">{data.personalInfo.website.split("https://")[1] ? data.personalInfo.website.split("https://")[1] : data.personalInfo.website}</span>
 						</a>
 					)}
 				</div>
@@ -54,12 +54,12 @@ const ModernTemplate = ({ data, accentColor }) => {
 
 			<div className="p-8">
 				{/* Professional Summary */}
-				{data.professional_summary && (
+				{data.professionalSummary && (
 					<section className="mb-8">
 						<h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
 							Professional Summary
 						</h2>
-						<p className="text-gray-700 ">{data.professional_summary}</p>
+						<p className="text-gray-700 ">{data.professionalSummary}</p>
 					</section>
 				)}
 
@@ -94,11 +94,11 @@ const ModernTemplate = ({ data, accentColor }) => {
 					</section>
 				)}
 
-				{/* Projects */}
+				{/* projects */}
 				{data.project && data.project.length > 0 && (
 					<section className="mb-8">
 						<h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
-							Projects
+							projects
 						</h2>
 
 						<div className="space-y-6">

@@ -67,11 +67,7 @@ const Projects = ({ value = [], onChange }) => {
       )}
 
       {/* Save */}
-      <div className="pt-4">
-        <button className="px-6 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 active:scale-95 transition">
-          Save Changes
-        </button>
-      </div>
+  
     </div>
   );
 };

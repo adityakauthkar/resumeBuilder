@@ -14,27 +14,27 @@ const MinimalTemplate = ({ data, accentColor }) => {
             {/* Header */}
             <header className="mb-10">
                 <h1 className="text-4xl font-thin mb-4 tracking-wide">
-                    {data.personal_info?.full_name || "Your Name"}
+                    {data.personalInfo?.name || "Your Name"}
                 </h1>
 
                 <div className="flex flex-wrap gap-6 text-sm text-gray-600">
-                    {data.personal_info?.email && <span>{data.personal_info.email}</span>}
-                    {data.personal_info?.phone && <span>{data.personal_info.phone}</span>}
-                    {data.personal_info?.location && <span>{data.personal_info.location}</span>}
-                    {data.personal_info?.linkedin && (
-                        <span className="break-all">{data.personal_info.linkedin}</span>
+                    {data.personalInfo?.email && <span>{data.personalInfo.email}</span>}
+                    {data.personalInfo?.phone && <span>{data.personalInfo.phone}</span>}
+                    {data.personalInfo?.location && <span>{data.personalInfo.location}</span>}
+                    {data.personalInfo?.linkedin && (
+                        <span className="break-all">{data.personalInfo.linkedin}</span>
                     )}
-                    {data.personal_info?.website && (
-                        <span className="break-all">{data.personal_info.website}</span>
+                    {data.personalInfo?.website && (
+                        <span className="break-all">{data.personalInfo.website}</span>
                     )}
                 </div>
             </header>
 
             {/* Professional Summary */}
-            {data.professional_summary && (
+            {data.professionalSummary && (
                 <section className="mb-10">
                     <p className=" text-gray-700">
-                        {data.professional_summary}
+                        {data.professionalSummary}
                     </p>
                 </section>
             )}
@@ -67,15 +67,15 @@ const MinimalTemplate = ({ data, accentColor }) => {
                 </section>
             )}
 
-            {/* Projects */}
-            {data.project && data.project.length > 0 && (
+            {/* projectss */}
+            {data.projects && data.projects.length > 0 && (
                 <section className="mb-10">
                     <h2 className="text-sm uppercase tracking-widest mb-6 font-medium" style={{ color: accentColor }}>
-                        Projects
+                        projectss
                     </h2>
 
                     <div className="space-y-4">
-                        {data.project.map((proj, index) => (
+                        {data.projects.map((proj, index) => (
                             <div key={index} className="flex flex-col gap-2 justify-between items-baseline">
                                 <h3 className="text-lg font-medium ">{proj.name}</h3>
                                 <p className="text-gray-600">{proj.description}</p>

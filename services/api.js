@@ -14,7 +14,7 @@ export const resumeEndpoints = {
 GET_ALL_RESUMES :  BASE_URL + "/resumes/" ,
 GET_RESUME :  BASE_URL + "/resumes",  
 CREATE_RESUME :  BASE_URL + "/create" , 
-UPDATE_RESUME : BASE_URL + "/resumes/", 
-DELETE_RESUME : BASE_URL + "/resumes/" , 
-
+UPDATE_RESUME : BASE_URL + "/resumes", 
+DELETE_RESUME : BASE_URL + "/resumes " , 
+    
 }

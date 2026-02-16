@@ -76,11 +76,7 @@ const ProfessionalExperience = ({ value = [], onChange }) => {
         </div>
       )}
 
-      <div>
-        <button className="px-7 py-2 rounded-lg bg-green-200 mt-5 text-green-600 text-sm font-medium hover:border border-green-500 active:scale-95 transition-all">
-          Save Changes
-        </button>
-      </div>
+     
     </div>
   );
 };

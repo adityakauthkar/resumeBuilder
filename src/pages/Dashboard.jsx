@@ -2,7 +2,7 @@ import { PlusIcon, UploadCloud, XIcon, Edit2, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../services/operations/authAPI";
-import { getAllresume } from "../../services/operations/resumeApi";
+import { getAllresume , createResume } from "../../services/operations/resumeApi";
 
 const Dashboard = () => {
   const colors = ["#9333ea"];
@@ -54,9 +54,8 @@ const Dashboard = () => {
 
   //create resume 
   const createResume = async (event) => {
-    event.preventDefault();
-    setshowCreateResume(false);
-    navigate("/resumebuilder");
+  
+      
   };
 
   //uploda resume 
@@ -71,26 +70,7 @@ const Dashboard = () => {
     navigate(`/resumeBuilder/${resume._id}`);
   };
 
-  //delete resume title
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this resume?",
-    );
-    if (!confirmDelete) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:4000/api/v1/resumes/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setAllResumes((prev) => prev.filter((r) => r._id !== id));
-    } catch (error) {
-      console.error("Error deleting resume:", error);
-    }
-  };
-
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
       <div className="max-w-7xl mx-auto">

@@ -36,11 +36,7 @@ const ProfessionalSummary = ({ value, onChange }) => {
         Tip: Keep it concise. Focus on role, experience, and key skills.
       </p>
 
-      <div>
-        <button className="px-7 py-2 rounded-lg bg-green-200 mt-5 text-green-600 text-sm font-medium hover:border border-green-500 active:scale-95 transition-all">
-          Save Changes
-        </button>
-      </div>
+    
     </div>
   );
 };
