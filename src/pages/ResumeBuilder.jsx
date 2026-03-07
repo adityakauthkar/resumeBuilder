@@ -9,7 +9,7 @@ import {
   Sparkle,
   User,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import PersonalInfo from "../components/PersonalInfo";
 import ResumePreview from "../components/ResumePreview";
@@ -23,10 +23,12 @@ import Education from "../components/Education";
 import { createResume, getResume } from "../../services/operations/resumeApi";
 import { updateResume } from "../../services/operations/resumeApi";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import html2pdf from "html2pdf.js";
 
 const ResumeBuilder = () => {
   const { id: resumeId } = useParams();
+  const resumeRef = useRef();
 
   const navigate = useNavigate();
   const [resumeData, setResumeData] = useState({
@@ -70,7 +72,7 @@ const ResumeBuilder = () => {
 
   useEffect(() => {
     if (resumeId) {
-      loadExistingResume(resumeId); 
+      loadExistingResume(resumeId);
     }
   }, [resumeId]);
 
@@ -78,21 +80,36 @@ const ResumeBuilder = () => {
   const updateResumedata = async () => {
     try {
       if (resumeId) {
-       let response =  await updateResume(resumeId, resumeData);
-        console.log("updated resume : " ,  response.data);
+        let response = await updateResume(resumeId, resumeData);
+        console.log("updated resume : ", response.data);
         setResumeData(response.data);
       } else {
-
         //new resume creating:
-        let response = await createResume(resumeData); 
-        navigate(`/resumebuilder/${response._id}`)
+        let response = await createResume(resumeData);
+        navigate(`/resumebuilder/${response._id}`);
         console.log("Resume Created:", response.data);
         setResumeData(resumeData);
-
       }
+      toast.success("Changes saved successfully");
     } catch (error) {
       console.log("Error", error);
+      toast.error("Failed to save changes");
     }
+  };
+
+  //handle pdf export :
+  const handleExportPDF = () => {
+    const element = resumeRef.current;
+
+    const options = {
+      margin: 0.5,
+      filename: `${resumeData.title || "resume"}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    };
+
+    html2pdf().set(options).from(element).save();
   };
 
   return (
@@ -106,6 +123,8 @@ const ResumeBuilder = () => {
           <ArrowLeftIcon size={16} /> Back to Dashboard
         </Link>
       </div>
+
+   
 
       <div className="max-w-7xl mx-auto px-4 pb-8">
         <div className="grid lg:grid-cols-12 gap-8">
@@ -257,9 +276,25 @@ const ResumeBuilder = () => {
               </div>
 
               {/* 6.Skills  */}
-              <div>{activeSection.id === "skills" && <Skills />}</div>
               <div>
-                <button className="px-7 py-2 rounded-lg bg-green-200 mt-5 text-green-600 text-sm font-medium hover:border border-green-500 active:scale-95 transition-all" onClick={updateResumedata}>
+                {activeSection.id === "skills" && (
+                  <Skills
+                    value={resumeData.skills}
+                    onChange={(updatedSkills) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        skills: updatedSkills,
+                      }))
+                    }
+                  />
+                )}
+              </div>
+
+              <div>
+                <button
+                  className="px-7 py-2 rounded-lg bg-green-200 mt-5 text-green-600 text-sm font-medium hover:border border-green-500 active:scale-95 transition-all"
+                  onClick={updateResumedata}
+                >
                   Save Changes
                 </button>
               </div>
@@ -268,9 +303,25 @@ const ResumeBuilder = () => {
 
           {/* Right panel - Resume Preview */}
           <div className="lg:col-span-7 max-lg:mt-6">
-            <div>{/* ----butttons---- */}</div>
+            <div className="absolute top-20 right-20 flex items-center gap-3 z-50">
+              <button
+                onClick={handleExportPDF}
+                className="flex items-center gap-2 px-6 py-2 text-xs bg-gradient-to-br from-blue-100  to-blue-200 text-green-600 rounded-lg ring-green-300 hover:ring transition-colors "
+              >
+                Share
+              </button>
 
-            <div>
+           
+
+              <button
+                onClick={handleExportPDF}
+                className="flex items-center gap-2 px-6 py-2 text-xs bg-gradient-to-br from-green-100  to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring transition-colors "
+              >
+                Download
+              </button>
+            </div>
+
+            <div ref={resumeRef}>
               {/* Resume preview */}
               <ResumePreview
                 data={resumeData}

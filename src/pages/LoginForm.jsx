@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { login } from "../../services/operations/authAPI";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -33,11 +35,11 @@ const LoginForm = () => {
     localStorage.setItem("user", JSON.stringify(data));
     localStorage.setItem("token", token);
 
-      alert("Login successful ");
+       toast.success("Login Successful"); 
       navigate("/dashboard");
     } catch (error) {
       console.log("Login Error:", error?.response?.data || error.message);
-      alert(error?.response?.data?.message || "Login Failed");
+        toast.error(error?.response?.data?.message || "Login Failed"); 
     }
   };
 
@@ -108,6 +110,7 @@ const LoginForm = () => {
         >
           Login
         </button>
+       
         <p className="text-gray-500 text-sm mt-3 mb-11">
           Don’t have an account?{" "}
           <Link className="text-indigo-500" to="/register">
@@ -115,7 +118,12 @@ const LoginForm = () => {
           </Link>
         </p>
       </form>
+
+
+
+
     </div>
+    
   );
 };
 

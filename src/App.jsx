@@ -7,10 +7,13 @@ import Layout from './pages/Layout'
 import Dashboard from './pages/Dashboard'
 import ResumeBuilder from './pages/ResumeBuilder'
 import Register from './pages/Register'
+import {ToastContainer} from 'react-toastify' 
 
 
 const App = () => {
   return (
+
+    <>
     <Routes>
 
       {/* Public routes (NO navbar) */}
@@ -26,6 +29,23 @@ const App = () => {
       </Route>
 
     </Routes>
+
+    
+    {/* Toast Container  */}
+   <ToastContainer
+      position="top-center"
+      autoClose={3000} 
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      pauseOnHover
+      draggable
+      theme="light"
+    />
+
+
+    </>
+
   )
 }
 

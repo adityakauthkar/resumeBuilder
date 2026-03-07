@@ -120,7 +120,7 @@ const PersonalInfo = ({
             />
           </div>
         );
-      })}
+      })} 
       
     </div>
   );
